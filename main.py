@@ -1,5 +1,21 @@
 import requests
+import pprint
 from pathlib import Path
+
+
+SPACEX_FLIGHT_ID = '5eb87ce3ffd86e000604b336'
+SPACEX_API_URL = 'https://api.spacexdata.com/v5/launches/{id}'
+
+
+def fetch_spacex_last_launch():
+    filename = 'images/spacex_{id}.jpg'
+    response = requests.get(SPACEX_API_URL.format(id=SPACEX_FLIGHT_ID))
+    response.raise_for_status()
+    pictures = response.json()['links']['flickr']['original']
+    Path('images').mkdir(parents=True, exist_ok=True)
+
+    for idx, picture in enumerate(pictures):
+        download_save_image(picture, filename.format(id=idx))
 
 
 def download_save_image(url, path):
@@ -9,12 +25,8 @@ def download_save_image(url, path):
         file.write(response.content)
 
 def main():
-    filename = 'images/hubble.jpeg'
-    url = 'https://upload.wikimedia.org/wikipedia/commons/3/3f/HST-SM4.jpeg'
-    download_save_image(url, filename)
+    fetch_spacex_last_launch()
 
-    Path('images').mkdir(parents=True, exist_ok=True)
-    
 
 if __name__ == '__main__':
     main()

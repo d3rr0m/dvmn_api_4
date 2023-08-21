@@ -32,6 +32,7 @@ def download_save_image(url, path):
 
 
 def get_file_extension(url):
+    print(url)
     url = unquote(url)
     file_path = urlparse(url).path
     filename = path.split(file_path)[1]
@@ -39,7 +40,22 @@ def get_file_extension(url):
     return extension
 
 
-def fetch_nasa_apod():
+def fetch_nasa_apod_massively(count):
+    image_url = 'https://api.nasa.gov/planetary/apod'
+    params = {
+        'api_key': config['NASA_API_TOKEN'],
+        'count': count
+    }
+    response = requests.get(image_url, params=params)
+    response.raise_for_status()
+
+    for idx, image_url in enumerate(response.json()):
+        extension = get_file_extension(image_url['url'])
+        download_save_image(image_url['url'], f'images/nasa_apod_{idx}{extension}')
+
+
+
+def fetch_nasa_apod_today():
     url = 'https://api.nasa.gov/planetary/apod'
     yeasterday_date = str(date.today()-timedelta(days=1))
     params = {
@@ -50,16 +66,13 @@ def fetch_nasa_apod():
     response.raise_for_status()
 
     url = response.json()['url']
-    response = requests.get(url)
-    response.raise_for_status()
     extension = get_file_extension(url)
-
-    with open (f'nasa_apod_{yeasterday_date}{extension}', 'wb') as file:
-        file.write(response.content)
+    download_save_image(url, f'images/nasa_apod_{yeasterday_date}{extension}')
 
 
 def main():
-    fetch_nasa_apod()
+    fetch_nasa_apod_massively(5)
+    #fetch_nasa_apod_today()
     #download_save_image()
     #fetch_spacex_last_launch()
 

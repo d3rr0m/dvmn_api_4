@@ -1,16 +1,29 @@
 # dvmn_api_4
 
 ## Установка
-1. Клоинруйте проект командой и перейдите в директорию проекта `git clone https://github.com/d3rr0m/dvmn_api_4.git`
-`cd dvmn_api_4`
+1. Клоинруйте проект командой `git clone` и перейдите в директорию проекта:
+```bash
+git clone https://github.com/d3rr0m/dvmn_api_4.git
+```
+```bash
+cd dvmn_api_4
+```
 2. Установите виртуальное окружение.
-`python -m venv venv`
+```bash
+python -m venv venv
+```
 3. Активируйте только что созданное виртуальное окружение.
-`$ source venv/bin/activate`
+```bash
+$ source venv/bin/activate
+```
 либо
-`venv\Scripts\activate.bat`
+```bash
+venv\Scripts\activate.bat
+```
 4. Установите необходимые пакеты
-`pip install -r requirements.txt`
+```bash
+pip install -r requirements.txt
+```
 
 
 ## Использование

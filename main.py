@@ -1,10 +1,9 @@
 import requests
 from dotenv import load_dotenv
-import pprint
 import os
 from urllib.parse import urlparse, unquote
 import datetime
-from common_functions import download_save_image
+from download_save_functions import download_save_image
 
 
 load_dotenv()
@@ -17,21 +16,21 @@ def get_nasa_epic_available_date():
     }
     response = requests.get(url, params=params)
     response.raise_for_status()
-    return response.json()[0]
+    available_date = datetime.date.fromisoformat(response.json()[0]['date'])
+    return available_date
 
 
-def fetch_nasa_epic_photos(date):
+def fetch_nasa_epic_photos(image_date, epic_count):
     url = 'https://api.nasa.gov/EPIC/api/natural/date/{date}'
     params = {
         'api_key': os.environ['NASA_API_TOKEN'],
     }
-    image_date = datetime.date.fromisoformat(date['date'])
     response = requests.get(
         url=url.format(date=image_date),
         params=params,
         )
     response.raise_for_status()
-    for i in range(10):
+    for i in range(epic_count):
         image_name = response.json()[i]['image']
         image_url = f'https://epic.gsfc.nasa.gov/archive/natural/'\
             f'{image_date.year}/{image_date.month:02d}/{image_date.day:02d}/'\
@@ -40,7 +39,7 @@ def fetch_nasa_epic_photos(date):
 
 
 def main():
-    fetch_nasa_epic_photos(get_nasa_epic_available_date())
+    fetch_nasa_epic_photos(get_nasa_epic_available_date(), 5)
     #print(get_nasa_epic_available_date())
     #fetch_nasa_apod_bulk(5)
     #fetch_nasa_apod_today()

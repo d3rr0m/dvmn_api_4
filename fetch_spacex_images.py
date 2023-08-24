@@ -1,7 +1,7 @@
 import argparse
 import requests
 
-from common_functions import download_save_image
+from download_save_functions import download_save_image
 
 
 def fetch_spacex_last_launch():

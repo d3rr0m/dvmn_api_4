@@ -3,7 +3,7 @@ import requests
 from dotenv import load_dotenv
 import os
 
-from common_functions import download_save_image, get_file_extension
+from download_save_functions import download_save_image, get_file_extension
 
 
 load_dotenv()

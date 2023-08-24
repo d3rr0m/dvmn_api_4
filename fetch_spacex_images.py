@@ -1,14 +1,21 @@
+import argparse
+import requests
+
 from common_functions import download_save_image
 
 
-import requests
-
-
 def fetch_spacex_last_launch():
-    spacex_api_url = 'https://api.spacexdata.com/v5/launches/{flight_id}'
-    spacex_flight_id = '5eb87ce3ffd86e000604b336'
+    parser = argparse.ArgumentParser(
+        description='Программа скачивает и сохраняет на диск фото старта'\
+             ' SpaceX. Можно передать в качестве агрумента ID запуска.'\
+             'Если аргумент не указан будут загружены фото последнего старта.'
+        )
+    parser.add_argument('-launch_id', '--launch_id', default='latest', help='ID запуска SpaceX')
+    args = parser.parse_args()
+
+    spacex_api_url = f'https://api.spacexdata.com/v5/launches/{args.launch_id}'
     filename = 'images/spacex_{id}.jpg'
-    response = requests.get(spacex_api_url.format(flight_id=spacex_flight_id))
+    response = requests.get(spacex_api_url)
     response.raise_for_status()
     pictures = response.json()['links']['flickr']['original']
 

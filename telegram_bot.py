@@ -8,3 +8,4 @@ if __name__ == '__main__':
     bot = Bot(environ['TELEGRAM_BOT_TOKEN'])
     chat_id = '@d3rr0m'
     bot.send_message(chat_id=chat_id, text='Hi there!')
+    bot.send_photo(chat_id=chat_id, photo=open('images/nasa_apod_0.jpg', 'rb'))

@@ -8,7 +8,7 @@ from download_save_functions import download_save_image
 def fetch_nasa_epic_photos(image_date, epic_count):
     url = 'https://api.nasa.gov/EPIC/api/natural/date/{date}'
     params = {
-        'api_key': os.environ['NASA_API_TOKEN'],
+        'api_key': environ['NASA_API_TOKEN'],
     }
     response = requests.get(
         url=url.format(date=image_date),
